@@ -4,6 +4,8 @@ local QBCore
 local seatbeltOn = false
 if hud.framework == 'qb-core' then
     QBCore = exports[hud.framework]:GetCoreObject()
+elseif hud.framework == 'esx' then
+    ESX = exports["es_extended"]:getSharedObject()
 end
 if hud.framework == 'qbx_core' then
     seatbeltOn = LocalPlayer.state.seatbelt
@@ -55,10 +57,8 @@ local function saveSettings()
 end
 ]]
 
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    Wait(500)
-    --local hudSettings = GetResourceKvpString('hudSettings')
-    --if hudSettings then loadSettings(json.decode(hudSettings)) end
+RegisterNetEvent("esx:playerLoaded", function()
+    Wait(2000)
     startHUD()
 end)
 
@@ -116,6 +116,14 @@ CreateThread(function()
         else
             stamina = GetPlayerUnderwaterTimeRemaining(cache.playerId) * 10
         end
+
+        TriggerEvent('esx_status:getStatus', 'hunger', function(status)
+            if status then hunger = status.val / 10000 end
+        end)
+
+        TriggerEvent('esx_status:getStatus', 'thirst', function(status)
+            if status then thirst = status.val / 10000 end
+        end)
 
         SendNUIMessage({
             action = 'updatePlayerHUD',
@@ -408,7 +416,11 @@ local function restartHud()
     if hud.framework == 'qbx_core' then
         exports.qbx_core:Notify('Hud Is Restarting', 'error')
     else
-        QBCore.Functions.Notify('Hud Is Restarting', 'error')
+        lib.notify({
+            title = 'HUD',
+            description = 'Hud Is Restarting',
+            type = 'warning'
+        })
     end
     Wait(1000)
     SendNUIMessage({ action = 'hideVehicleHUD'})
@@ -422,7 +434,11 @@ local function restartHud()
     if hud.framework == 'qbx_core' then
         exports.qbx_core:Notify('Hud Has Started!', 'success')
     else
-        QBCore.Functions.Notify('Hud Has Started', 'success')
+        lib.notify({
+            title = 'HUD',
+            description = 'Hud Has Started',
+            type = 'warning'
+        })
     end
 end
 
