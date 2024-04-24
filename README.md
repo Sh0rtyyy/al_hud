@@ -4,7 +4,7 @@ Credits to Marttins for the base code and contributions from ChristianBDev's for
 
 # Compatibility
 - HRS's Handling script for gears
-- QBX and QB Framework
+- ESX
 
 # Preview 1.0
 ![Image](https://i.imgur.com/68Xu9gC.png)
@@ -39,5 +39,5 @@ Credits to Marttins for the base code and contributions from ChristianBDev's for
 - Added radio support (Voice bar turns purple)
 
 # Dependencies
-- qbx_core or qb-core
+- es_extended
 - ox_lib
